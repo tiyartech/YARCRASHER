@@ -1,0 +1,10 @@
+{
+  "name": "yarcrasher-web-ui",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.6.0",
+    "pino": "^8.0.0"
+  }
+}

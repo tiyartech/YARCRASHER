@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>YARCRASHER</title>
+  <style>
+    body { background-color: #000; color: #eee; font-family: sans-serif; text-align: center; padding: 40px; }
+    input, button { margin: 10px; padding: 10px; width: 250px; }
+    button { background: #f00; color: #fff; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <img src="https://i.imgur.com/EGp7eGO.png" width="150" />
+  <h2>YARCRASHER - UI</h2>
+
+  <input id="pairNumber" placeholder="Nomor untuk Pair (628xx)" />
+  <button onclick="pair()">Pairing</button>
+
+  <input id="targetNumber" placeholder="Nomor Target (628xx)" />
+  <input id="targetMsg" placeholder="Pesan spam" />
+  <button onclick="spam()">Kirim Spam</button>
+
+  <p id="result"></p>
+
+  <script>
+    async function pair() {
+      const number = document.getElementById("pairNumber").value;
+      const res = await fetch("/api/pair", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = data.pairingCode ? 
+        "Pairing Code: " + data.pairingCode : "Gagal: " + data.error;
+    }
+
+    async function spam() {
+      const number = document.getElementById("targetNumber").value;
+      const message = document.getElementById("targetMsg").value;
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number, message })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = data.success ? 
+        "Pesan terkirim!" : "Gagal: " + data.error;
+    }
+  </script>
+</body>
+</html>
