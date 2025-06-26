@@ -1,5 +1,2 @@
-import { makeWASocket } from '@whiskeysockets/baileys';
-
-export function makeWAS(config) {
-  return makeWASocket(config);
-}
+import { makeWASocket } from '@whiskeysockets/baileys'
+export const makeWAS = (config) => makeWASocket(config)
