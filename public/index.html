@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>BIONIX SPAM UI</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #eee;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #ff0000;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    .container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.imgur.com/EGp7eGO.png" width="150" />
+    <h2>Pairing & Spam</h2>
+    <input type="text" id="pairNumber" placeholder="Masukkan nomor untuk Pair (628xx)">
+    <button onclick="pair()">Generate Pairing Code</button>
+
+    <hr style="width: 60%; margin: 30px auto; border-color: #444" />
+
+    <input type="text" id="targetNumber" placeholder="Nomor target (contoh: 628xxx)">
+    <button onclick="spam()">KIRIM SPAM</button>
+
+    <p id="result"></p>
+  </div>
+
+  <script>
+    async function pair() {
+      const number = document.getElementById("pairNumber").value;
+      const res = await fetch("/api/pair", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = data.pairingCode ? 
+        "Kode Pairing: " + data.pairingCode : data.error;
+    }
+
+    async function spam() {
+      const number = document.getElementById("targetNumber").value;
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = data.success ? 
+        "Berhasil dikirim!" : "Gagal: " + data.error;
+    }
+  </script>
+</body>
+</html>
